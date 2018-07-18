@@ -1,11 +1,11 @@
 #include "ForestFire.h"
-
+#include "mpi.h"
 int tMax;//Burn time of the largest cluster
 float pTree;//pTree <  tMax
 float pIgnite; //pIgnite < pTree
 
-
 int main(int argc, char *argv[]){
+	#TODO: Implement parallelization of generateForest and run using MPI halo exchange.
 	pTree = 0.05;
 	pIgnite = 0.04;
 	int** forest = generateForest();
