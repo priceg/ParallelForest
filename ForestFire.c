@@ -3,7 +3,7 @@
 int tMax;//Burn time of the largest cluster
 float pTree;//pTree <  tMax
 float pIgnite; //pIgnite < pTree
-
+char dirName[25];
 
 int main(int argc, char *argv[]){
 	pTree = 0.05;
@@ -12,12 +12,55 @@ int main(int argc, char *argv[]){
 	run(forest);
 }
 
+void saveForestToImage(int** forest, int gen) {
+	if(gen == 0){
+		getDirName(dirName);
+		mkdir(dirName, 0777);
+	}
+	FILE* file;
+	char fileName[50];
+	sprintf(fileName, "%s/%s%d.ppm", dirName, "ForestFireModel", gen);
+	
+    file = fopen(fileName, "wb");
+
+    fprintf(file, "P6\n");
+    fprintf(file, "%d %d\n", SIZE_X, SIZE_Y);
+    fprintf(file, "255\n");
+	for(int x = 0; x < SIZE_X; x++){
+		for(int y = 0; y < SIZE_Y; y++){
+			switch(forest[x][y]){
+				case EMPTY:
+					fprintf(file, "%c%c%c", 0, 0, 0);
+				break;
+				case TREE:
+					fprintf(file, "%c%c%c", 34, 139, 34);
+				break;
+				case BURNING:
+					fprintf(file, "%c%c%c", 242, 125, 12);
+				break;
+			}
+		}
+	}
+    fclose(file);
+}
+
+void getDirName(char* dirName){
+	struct stat st = {0};
+	char* baseDirName = "ForestFireModel";
+	int index = 0;
+	do{
+		sprintf(dirName, "%s%d", baseDirName, index);
+		index++;
+	}while(stat(dirName, &st) != -1);
+}
+
 void run(int** forest){
 	int** bufferForest = allocForest();
 	copyForest(forest, bufferForest);
 	int gen = 0;
 	while (gen < MAX_GEN){
 		printForest(forest, gen);
+		saveForestToImage(forest, gen);
 		for (int x = 0; x < SIZE_X; x++){
 			for (int y = 0; y < SIZE_Y; y++) {
 				switch (forest[x][y]){
