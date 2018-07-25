@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
 
 #define SIZE_X 4
 #define SIZE_Y 4
@@ -10,6 +13,10 @@
 #define EMPTY 0
 #define TREE 1
 #define BURNING 2
+
+void saveForestToImage(int** forest, int gen);
+
+void getDirName(char* dirName);
 
 //Runs the simulation on the given forest
 void run(int** forest);
