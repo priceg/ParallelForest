@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -l nodes=3:ppn=12
+#PBS -l walltime=0:02:00
+#PBS -q batch
+#PBS -N test
+#PBS -j oe
+cd ~/project_test
+export OMP_NUM_THREADS=12
+mpiexec -np 3 --map-by ppr:1:node --hostfile $PBS_NODEFILE ./paraForest.cx
+

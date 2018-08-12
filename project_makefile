@@ -1,0 +1,21 @@
+FCC = mpicc #compiler from c file to object file
+LDC = mpicc #compiler from object file to executable file
+LD_FLAGS = -std=c11 -g #flags used with LDC
+FLAGS = -std=c11 -g #flags used with FCC
+PROG = paraForest.cx #The executable file(s)
+RM = /bin/rm #I believe this is where this file is run. Maybe.
+OBJS = paraForest.o #The object file(s)
+
+#all rule. This compiles all programs inputed in the format given
+all: $(PROG)
+
+$(PROG): $(OBJS)
+	$(LDC) $(LD_FLAGS) $(OBJS) -o $(PROG)
+
+%.o: %.c
+	$(FCC) $(FLAGS) -c $<
+
+#clean rule. This removes files that we don't need
+clean:
+	$(RM) -rf *.o $(PROG) *.mod 
+
