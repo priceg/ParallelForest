@@ -1,30 +1,37 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <string.h>
 
-#define SIZE_X 4
-#define SIZE_Y 4
+#define SIZE_X 1000
+#define SIZE_Y 1000
 
-#define MAX_GEN 25
+#define MAX_GEN 200
 
 #define EMPTY 0
 #define TREE 1
 #define BURNING 2
 
+void saveForestToImage(int* forest, int gen);
+
+void getDirName(char* dirName);
+
 //Runs the simulation on the given forest
-void run(int** forest);
+void run(int* whole, int* forest, int rank, int numranks, int size, int* counts, int* offSets);
 
 //Allocates memory for forest
-int** allocForest();
+int* allocForest();
 
 //Generates a new forest 
-int** generateForest();
+int* generateForest();
 
 //Copies value from one forest to another
-void copyForest(int** from, int** to);
+void copyForest(int* from, int* to, int chunkSize);
 
 //Returns if true if any of a cells neighbors are burning
-bool isNeighborBurning(int** forest, int x, int y);
+bool isNeighborBurning(int* forest, int z);
 
 //Returns true if the trail is a success using the given probability
 bool isSuccess(float probability);
